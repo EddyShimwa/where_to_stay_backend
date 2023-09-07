@@ -8,8 +8,8 @@ router.get('/', propertiesController.getAllProperties) ; // Route to retrieve al
 
 router.get('/:id', propertiesController.getPropertyById); // Route to retrieve landlord details by ID
 
-router.put('/:id', propertiesController.updatePropertyById); // Route to update landlord information by ID
+// router.put('/:id', propertiesController.updatePropertyById); // Route to update landlord information by ID
 
-router.delete('/:id', propertiesController.deletePropertyById); // Route to delete landlord information by ID
+// router.delete('/:id', propertiesController.deletePropertyById); // Route to delete landlord information by ID
 
 module.exports = router;

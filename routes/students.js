@@ -3,7 +3,7 @@ const router = express.Router();
 const studentController = require('../controllers/studentsController');
 
 // students routes
-router.get('/students', userController.getAllStudents); // Route to retrieve all students
+router.get('/students', studentController.getAllStudents); // Route to retrieve all students
 
 router.get('/students/:id', studentController.getStudentById); // Route to retrieve student details by ID
 

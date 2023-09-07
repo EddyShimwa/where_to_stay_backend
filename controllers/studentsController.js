@@ -6,7 +6,7 @@ const getAllStudents = async (req, res) => {
     res.json(students);
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error detected' });
   }
 };
 
