@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const landlordController = require('../controllers/landlordsContoller');
 
-// Route to create a new landlord account
+// Route to create a new landlord accountt
 router.post('/create', landlordController.createLandlord);
 
 // Route to retrieve all landlords
