@@ -1,9 +1,10 @@
-const db = require('../config/database')
+const pool = require('../config/database');
 
 const getAllStudents = async (req, res) => {
   try {
-    const students = await db.any('SELECT * FROM students');
-    res.json(students);
+    const query = 'SELECT * FROM students';
+    const { rows } = await pool.query(query);
+    res.json(rows);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error detected' });
@@ -11,13 +12,12 @@ const getAllStudents = async (req, res) => {
 };
 
 const createStudent = async (req, res) => {
-  const { username, email } = req.body;
+  const { username, campus } = req.body;
   try {
-    const newStudent = await db.one(
-      'INSERT INTO students (username, email) VALUES ($1, $2) RETURNING *',
-      [username, email]
-    );
-    res.status(201).json(newStudent);
+    const query = 'INSERT INTO students (username, campus) VALUES ($1, $2) RETURNING *';
+    const values = [username, campus];
+    const { rows } = await pool.query(query, values);
+    res.status(201).json(rows[0]);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -25,14 +25,20 @@ const createStudent = async (req, res) => {
 };
 
 const getStudentById = async (req, res) => {
-    const studentId = req.params.id;
-    try {
-        const student = await db.one('SELECT * FROM students WHERE id = $1', [studentId]);
-        res.json(student);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+  const studentId = req.params.id;
+  try {
+    const query = 'SELECT * FROM students WHERE id = $1';
+    const values = [studentId];
+    const { rows } = await pool.query(query, values);
+    if (rows.length === 0) {
+      res.status(404).json({ error: 'Student not found' });
+    } else {
+      res.json(rows[0]);
     }
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
 
 module.exports = {
@@ -40,5 +46,3 @@ module.exports = {
   createStudent,
   getStudentById
 };
-
-// Implement other controller functions for updating, deleting, etc.
