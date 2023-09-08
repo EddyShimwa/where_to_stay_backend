@@ -1,8 +1,9 @@
-const pgp = require('pg-promise')();
+const { Pool } = require('pg');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const db = pgp({
+// Create a new PostgreSQL pool
+const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,
@@ -11,67 +12,12 @@ const db = pgp({
 });
 
 // Test the database connection
-db.any('SELECT 1')
+pool.connect()
   .then(() => {
-    console.log('Connected to PostgreSQL');
+    console.log('Connected to PostgreSQL SuccessFully!');
   })
   .catch((err) => {
     console.error('Error connecting to PostgreSQL:', err);
   });
 
-module.exports = db;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const {Client} = require('pg');
-
-// const client = new Client({
-//     host: 'localhost',
-//     user: "postgres",
-//     password: "password",
-//     port: 5432,
-//     database: "postgres" 
-// });
-
-// client.connect(); 
-
-// client.query('SELECT * FROM users', (err, res) => {
-//     if (!err) {
-//         console.log(res.rows);
-//     }
-//         else {
-//         console.log(err.message);
-
-//     }
-//     client.end();
-// });
+module.exports = pool;
