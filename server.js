@@ -16,7 +16,7 @@ const propertyRoutes = require('./routes/properties');
 app.use('/api', studentRoutes);
 app.use('/api', landlordRoutes);
 app.use('/api', propertyRoutes);
-// app.use('/api', applicationRoutes)
+app.use('/api', applicationRoutes)
 
 
 app.listen(port, () => console.log(`Server running on port ${port}...`));
