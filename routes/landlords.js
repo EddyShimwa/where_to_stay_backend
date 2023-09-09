@@ -12,6 +12,6 @@ router.get('/landlords', landlordController.getAllLandlords) ;
 router.get('/landlords/:id', landlordController.getLandlordById);
 
 // Route to update landlord information by ID
-// router.put('landlords/:id', landlordController.updateLandlordById);
+router.put('landlords/:id', landlordController.updateLandlordById);
 
 module.exports = router;
