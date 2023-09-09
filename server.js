@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: false }));
 const studentRoutes = require('./routes/students');
 const landlordRoutes = require('./routes/landlords');
 const propertyRoutes = require('./routes/properties');
-// const applicationRoutes = require('./routes/applications');
+const applicationRoutes = require('./routes/applications');
 
 // using routes
 app.use('/api', studentRoutes);
