@@ -12,6 +12,6 @@ router.get('/', applicationController.getAllApplications) ;
 router.get('/:id', applicationController.getApplicationById);
 
 // Route to update application information by ID
-// router.put('/:id', applicationController.updateapplicationById);
+router.put('/:id', applicationController.updateapplicationById);
 
 module.exports = router;
