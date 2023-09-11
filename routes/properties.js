@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const propertiesController = require('../controllers/propertiesController');
 
-router.post('/properties/create', propertiesController.createProperty); // Route to create a new landlord account
+router.post('/properties', propertiesController.createProperty);
 
-router.get('/properties', propertiesController.getAllProperties) ; // Route to retrieve all landlords
+router.get('/properties', propertiesController.getAllProperties) ; 
 
-router.get('properties/:id', propertiesController.getPropertyById); // Route to retrieve landlord details by ID
+router.get('/properties/:id', propertiesController.getPropertyById); 
 
-// router.put('/:id', propertiesController.updatePropertyById); // Route to update landlord information by ID
+// router.put('/:id', propertiesController.updatePropertyById); // for updating property information by ID
 
 // router.delete('/:id', propertiesController.deletePropertyById); // Route to delete landlord information by ID
 
