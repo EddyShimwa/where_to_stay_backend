@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Create a new PostgreSQL pool
+
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
