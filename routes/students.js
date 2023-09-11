@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const studentController = require('../controllers/studentsController');
 
+const { Student } = require('../models/student');
+
 // students routes
-router.get('/students', studentController.getAllStudents); // Route to retrieve all students
+router.get('/students', studentController.getAllStudents); 
 
-router.get('/students/:id', studentController.getStudentById); // Route to retrieve student details by ID
+router.get('/students/:id', studentController.getStudentById); 
 
-router.post('/students', studentController.createStudent);  // Route to create a new student account
-
+router.post('/students', studentController.createStudent); 
 module.exports = router;
