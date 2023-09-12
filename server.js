@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const express = require('express');
+// const sequelize = require('./config/db');
 const app = express();
 const checkAuth = require('./middleware/auth')
 const port = process.env.PORT || 3000;
