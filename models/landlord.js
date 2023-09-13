@@ -1,27 +1,32 @@
-const pool = require('../config/database');
+// module.exports = (sequelize, DataTypes) => {
+//    const Landlord = sequelize.define('Landlord', {
+//        id: {
+//            type: DataTypes.INTEGER,
+//            primaryKey: true,
+//            autoIncrement: true
+//        },
+//        landlord_name: {
+//            type: DataTypes.STRING,
+//            allowNull: false
+//        },
+//        landlord_email: {
+//            type: DataTypes.STRING,
+//            allowNull: false
+//        },
+//        landlord_password: {
+//            type: DataTypes.STRING,
+//            allowNull: false
+//        },
+//    }, {
+//        tableName: 'landlords',
+//        timestamps: true,
+//    },);
 
-const getAllLandlords = async () => {
-  const query = 'SELECT * FROM landlords';
-  const { rows } = await pool.query(query);
-  return rows;
-};
+//     Landlord.associate = (models) => {
+//          Landlord.hasMany(models.Property, {
+//               foreignKey: 'landlord_id',
+//               onDelete: 'CASCADE',
+//          });
+//     };
 
-const createLandlord = async (username, propertyOwnership) => {
-  const query = 'INSERT INTO landlords (username, property_ownership) VALUES ($1, $2) RETURNING *';
-  const values = [username, propertyOwnership];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
-};
-
-const getLandlordById = async (id) => {
-  const query = 'SELECT * FROM landlords WHERE id = $1';
-  const values = [id];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
-};
-
-module.exports = {
-  getAllLandlords,
-  createLandlord,
-  getLandlordById,
-};
+// };

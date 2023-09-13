@@ -1,50 +1,45 @@
-const pool = require('../config/database');
+const db = require('../models');
+const Landlord = db.landlords;
 
+// Create and Save a new Landlord
+const createLandlord = async (req, res) => {
+  try {
+    const landlord = await Landlord.create(req.body);
+    res.status(201).json(landlord);
+  } catch (error) {
+    console.error("Database error:", error);
+    return res.status(500).json("Internal server error");
+  }
+};
+
+// Retrieve all Landlords from the database.
 const getAllLandlords = async (req, res) => {
   try {
-    const query = 'SELECT * FROM landlords';
-    const { rows } = await pool.query(query);
-    res.json(rows);
+    const landlords = await Landlord.findAll();
+    res.json(landlords);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Database error:", error);
+    return res.status(500).json("Internal server error");
   }
-};
+}
 
-const createLandlord = async (req, res) => {
-  const { username, property_ownership } = req.body;
-  try {
-    const query = 'INSERT INTO landlords (username, property_ownership) VALUES ($1, $2) RETURNING *';
-    const values = [username, property_ownership];
-    const { rows } = await pool.query(query, values);
-    // Use rows[0] to get the newly inserted landlord
-    res.status(201).json(rows[0]);
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-
+// Find a single Landlord with an id
 const getLandlordById = async (req, res) => {
-  const landlordId = req.params.id;
+  const id = req.params.id;
   try {
-    const query = 'SELECT * FROM landlords WHERE id = $1';
-    const values = [landlordId];
-    const { rows } = await pool.query(query, values);
-    if (rows.length === 0) {
-      res.status(404).json({ error: 'Landlord not found' });
-    } else {
-      res.json(rows[0]);
+    const landlord = await Landlord.findByPk(id);
+    if (landlord === null) {
+      return res.status(404).json("Landlord not found");
     }
+    res.json(landlord);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Database error:", error);
+    return res.status(500).json("Internal server error");
   }
-};
+}
 
 module.exports = {
-  getAllLandlords,
   createLandlord,
+  getAllLandlords,
   getLandlordById
 };

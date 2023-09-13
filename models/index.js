@@ -1,5 +1,6 @@
-const {Sequelize, DataTypes} = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv');
+dotenv.config();
 
 const sequelize = new Sequelize({
     host: process.env.DB_HOST,
@@ -9,12 +10,12 @@ const sequelize = new Sequelize({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     logging: false,
-    });
+});
 
     // Test the database connection
 
     sequelize.authenticate().then(() => {
-        console.log(`Database connected to discover`)
+        console.log('Database connected successfully')
     }).catch((err) => {
         console.log(err)
     })
@@ -24,9 +25,11 @@ const sequelize = new Sequelize({
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
 
- //conncetion to models
-
-    db.Student = require('../models/student')(sequelize, DataTypes);
-    db.Landlord = require('../models/landlord')(sequelize, DataTypes);
+ //connection to models
+    db.User = require('../models/user')(sequelize, DataTypes);
+    // db.Student = require('../models/student')(sequelize, DataTypes);
+    // db.Landlord = require('./landlord')(sequelize, DataTypes);
     db.Property = require('../models/property')(sequelize, DataTypes);
     db.Application = require('../models/application')(sequelize, DataTypes);
+
+    module.exports = db;

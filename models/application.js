@@ -1,31 +1,42 @@
-const pool = require('../config/database');
 
-const getAllApplications = async () => {
-  const query = 'SELECT * FROM applications';
-  const { rows } = await pool.query(query);
-  return rows;
-};
+module.exports = (sequelize, DataTypes) => {
+    const Application = sequelize.define('Application', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        student_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        property_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        application_status: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        application_created_on: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+    }, {
+        tableName: 'applications',
+        timestamps: true,
+    },);
 
-const createApplication = async (propertyId, studentId, applicationDate, status) => {
-  const query = `
-    INSERT INTO applications (property_id, student_id, application_date, status)
-    VALUES ($1, $2, $3, $4) RETURNING *
-  `;
+    Application.associate = (models) => {
+        Application.belongsTo(models.Student, {
+            foreignKey: 'id',
+            onDelete: 'CASCADE',
+        });
+        Application.belongsTo(models.Property, {
+            foreignKey: 'id',
+            onDelete: 'CASCADE',
+        });
+    };
 
-  const values = [propertyId, studentId, applicationDate, status];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
-};
-
-const getApplicationById = async (id) => {
-  const query = 'SELECT * FROM applications WHERE id = $1';
-  const values = [id];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
-};
-
-module.exports = {
-  getAllApplications,
-  createApplication,
-  getApplicationById,
+    return Application;
 };

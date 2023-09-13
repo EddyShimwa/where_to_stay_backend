@@ -1,4 +1,4 @@
-const pool = require('../config/database');
+const pool = require('../config/config');
 
 const getAllProperties = async (req, res) => {
   try {

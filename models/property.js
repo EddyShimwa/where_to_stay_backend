@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, DataTypes) => { 
   const Property = sequelize.define('Property', {
     id: {
@@ -47,7 +46,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: 'properties',
     timestamps: true,
-  }, {} );
+  },);
+
     Property.associate = (models) => {
         Property.belongsTo(models.Landlord, {
             foreignKey: 'landlord_id',
@@ -58,5 +58,6 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
         });
     };
+    return Property;
   } 
 

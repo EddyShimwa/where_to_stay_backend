@@ -1,26 +1,33 @@
-module.exports = (sequelize, DataTypes) => {
+// module.exports = (sequelize, DataTypes) => {
 
-    const Student = sequelize.define('Student', {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        student_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        student_email: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        student_password: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-}, {
-    tableName: 'students',
-    timestamps: true}, );
+//     const Student = sequelize.define('Student', {
+//         id: {
+//             type: DataTypes.INTEGER,
+//             primaryKey: true,
+//             autoIncrement: true
+//         },
+//         firstName: {
+//             type: DataTypes.STRING,
+//             allowNull: false
+//         },
+//         lastName: {
+//             type: DataTypes.STRING,
+//             allowNull: false
+//         },
+//         password: {
+//             type: DataTypes.STRING,
+//             allowNull: false
+//         },
+// }, {
+//     tableName: 'students',
+//     timestamps: true},);
 
-    return Student;
-}
+//     Student.associate = (models) => {
+//         Student.hasMany(models.Application, {
+//             foreignKey: 'student_id',
+//             onDelete: 'CASCADE',
+//         });
+//     };
+
+//     return Student;
+// }

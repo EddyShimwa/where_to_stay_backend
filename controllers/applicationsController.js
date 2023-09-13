@@ -1,4 +1,4 @@
-const db = require('../config/database')
+const db = require('../config/config')
 
 const getAllApplications = async (req, res) => {
   try {

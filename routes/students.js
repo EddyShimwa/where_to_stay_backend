@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const studentController = require('../controllers/studentsController');
-
-const { Student } = require('../models/student');
+const { isAuth, isStudent, } = require('../middleware/isAuth');
 
 // students routes
-router.get('/students', studentController.getAllStudents); 
+router.get('/students', isAuth, isStudent, studentController.getAllStudents); 
 
-router.get('/students/:id', studentController.getStudentById); 
+router.get('/students/:id', isAuth, isStudent, studentController.getStudentById); 
 
-router.post('/students', studentController.createStudent); 
+router.post('/students', isAuth, isStudent, studentController.createStudent); 
+
 module.exports = router;
