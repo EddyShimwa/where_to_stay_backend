@@ -1,8 +1,7 @@
 const Joi = require('joi');
 const express = require('express');
-// const sequelize = require('./config/db');
 const app = express();
-const checkAuth = require('./middleware/auth')
+const checkAuth = require('./middleware/isAuth')
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -17,7 +16,7 @@ const authsRouter = require('./routes/auths');
 
 // using routes
 app.use('/api', checkAuth, studentRoutes);
-app.use('/api', landlordRoutes);
+app.use('/api', checkAuth, landlordRoutes);
 app.use('/api', propertyRoutes);
 app.use('/api', applicationRoutes)
 app.use('/api', authsRouter);
