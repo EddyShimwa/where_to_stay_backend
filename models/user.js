@@ -1,3 +1,5 @@
+const { Sequelize, DataTypes } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         id: {
@@ -5,13 +7,22 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        name: {
+        firstName: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull:false
+        },
+        
+        lastName: {
+            type: DataTypes.STRING,
+            allowNull:false
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: true
         },
         role: {
             type: DataTypes.STRING,
@@ -22,22 +33,27 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
     }, {
-        tableName: 'Users',
+        tableName: 'users',
         timestamps: true,
-    },);
- 
+    });
 
-    if (User.role === 'landlord') {
-        User.hasMany(models.Property, {
-            foreignKey: 'id',
-            onDelete: 'CASCADE',
-        });
-    } else if (User.role === 'student') {
+    // Associations
+    User.associate = (models) => {
+       if(models.role === 'student'){
         User.hasMany(models.Application, {
-            foreignKey: 'id',
+            foreignKey: 'userId', 
             onDelete: 'CASCADE',
         });
-    }
- 
+       }
+         else if(models.role === 'landlord'){
+            User.hasMany(models.Property, {
+                foreignKey: 'userId', 
+                onDelete: 'CASCADE',
+            });
+         }
+    };
+
     return User;
- };
+};
+
+

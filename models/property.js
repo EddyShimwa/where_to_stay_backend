@@ -5,19 +5,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    property_name: {
+    description: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    property_description: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    property_price: {
+    price: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    property_location: {
+    location: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -25,39 +21,40 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    property_image: {
+    image: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    property_owner: {
-      type: DataTypes.STRING,
+
+    isAvailable: {
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
-    property_status: DataTypes.STRING,
-    property_bedrooms: {
+    number_rooms: {
       type: DataTypes.INTEGER,
       allowNull: false
     },  
-    property_created_on: {
-      type: DataTypes.DATE,
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false
-    },
+    }
 
   }, {
     tableName: 'properties',
     timestamps: true,
   },);
 
-    Property.associate = (models) => {
-        Property.belongsTo(models.Landlord, {
-            foreignKey: 'landlord_id',
-            onDelete: 'CASCADE',
-        });
-        Property.hasMany(models.Application, {
-            foreignKey: 'property_id',
-            onDelete: 'CASCADE',
-        });
-    };
+  Property.associate = (models) => {
+    Property.belongsTo(models.User, { 
+        foreignKey: 'userId', 
+        onDelete: 'CASCADE',
+    });
+    Property.hasMany(models.Application, {
+        foreignKey: 'propertyId', 
+        onDelete: 'CASCADE',
+    });
+};
     return Property;
   } 
+
 

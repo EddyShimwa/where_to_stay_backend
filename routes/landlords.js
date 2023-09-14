@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const landlordController = require('../controllers/landlordsContoller');
-const { auth, isLandLord }  = require('../middleware/isAuth');
+const { isLandLord, isAuth }  = require('../middleware/isAuth');
 
-router.post('/landlord/create', auth, isLandLord, landlordController.createLandlord);
 
-router.get('/landlords', auth, isLandLord, landlordController.getAllLandlords) ;
+router.get('/landlords', isAuth, isLandLord, landlordController.getAllLandlords) ;
 
-router.get('/landlords/:id', auth, isLandLord, getLandlordById);
+router.get('/landlords/:id', isAuth, getLandlordById);
 
-// router.put('landlords/:id', landlordController.updateLandlordById);
+router.put('landlords/:id', isAuth, isLandLord, landlordController.updateLandlordById);
 
 module.exports = router;

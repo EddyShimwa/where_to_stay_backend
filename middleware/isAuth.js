@@ -19,12 +19,6 @@ const isAuth = async (req, res, next) => {
 
         decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  // if (!decoded) {
-  //   return res
-  //     .status(401)
-  //     .json({ msg: "Token is not valid, User authorization failed!" });
-  // }
-
      const user = await User.findOne({ where: { id: decoded.id } });
      // checking if the user exists 
 
@@ -71,7 +65,6 @@ const isLandLord = async (req, res, next) => {
   }
   
 }
-
 
 module.exports = {
   isAuth,

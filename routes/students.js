@@ -8,6 +8,5 @@ router.get('/students', isAuth, isStudent, studentController.getAllStudents);
 
 router.get('/students/:id', isAuth, isStudent, studentController.getStudentById); 
 
-router.post('/students', isAuth, isStudent, studentController.createStudent); 
 
 module.exports = router;

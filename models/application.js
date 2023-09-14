@@ -1,3 +1,4 @@
+const { application } = require("express");
 
 module.exports = (sequelize, DataTypes) => {
     const Application = sequelize.define('Application', {
@@ -14,29 +15,24 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        application_status: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        application_created_on: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
     }, {
         tableName: 'applications',
         timestamps: true,
-    },);
+    });
 
     Application.associate = (models) => {
-        Application.belongsTo(models.Student, {
-            foreignKey: 'id',
+        Application.belongsTo(models.User, { 
+            foreignKey: 'userId', 
             onDelete: 'CASCADE',
         });
         Application.belongsTo(models.Property, {
-            foreignKey: 'id',
+            foreignKey: 'propertyId', 
             onDelete: 'CASCADE',
         });
     };
 
     return Application;
 };
+
+
+
