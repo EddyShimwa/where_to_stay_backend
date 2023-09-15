@@ -1,7 +1,7 @@
-const Joi = require('joi');
 const express = require('express');
 const app = express();
-const checkAuth = require('./middleware/isAuth')
+const dotenv = require('dotenv');
+dotenv.config();
 const port = process.env.PORT || 3001;
 
 app.use(express.json());
