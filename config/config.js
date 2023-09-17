@@ -11,10 +11,7 @@ module.exports = {
     },
     development: {
         dialect: 'postgres',
-        port: process.env.DB_PORT,
-        database: process.env.DB_NAME,
-        username: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
+        DATABASE_URL: "DATABASE_URL",
     },
   };
   
