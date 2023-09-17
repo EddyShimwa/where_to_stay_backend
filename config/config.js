@@ -9,9 +9,9 @@ module.exports = {
           rejectUnauthorized: false 
       },
     },
-    development: {
-        dialect: 'postgres',
-        DATABASE_URL: "DATABASE_URL",
-    },
+    // development: {
+    //     dialect: 'postgres',
+    //     DATABASE_URL: "DATABASE_URL",
+    // },
   };
   
