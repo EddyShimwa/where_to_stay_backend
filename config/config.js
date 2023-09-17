@@ -6,7 +6,7 @@ module.exports = {
     production: {
         username: eddy,
         port: 5432,
-        password: 1Gs9CXEwJo3JIsM0I6PrnPJvlkGJDwAA,
+        password: '1Gs9CXEwJo3JIsM0I6PrnPJvlkGJDwAA',
         database: wheretostay,
         host: dpg-ck23i3o21fec73b49nkg-a,
         dialect: 'postgres',
