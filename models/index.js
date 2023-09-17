@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const sequelize = new Sequelize({
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: process.env.DB_NAME,
