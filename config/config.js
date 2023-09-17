@@ -9,6 +9,8 @@ module.exports = {
           rejectUnauthorized: false 
       },
     },
+
+    dialect: 'postgres',
     // development: {
     //    dialect: 'postgres',
     //     url: process.env.DEV_DATABASE_URL,
