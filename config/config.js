@@ -1,7 +1,7 @@
 module.exports = {
     production: {
+      dialect: 'postgres',
       use_env_variable: 'DATABASE_URL',
-      dialect: 'postgres', // Specify the dialect (in this case, PostgreSQL)
       logging: false,
       dialectOptions: {
         ssl: {
@@ -9,6 +9,20 @@ module.exports = {
           rejectUnauthorized: false,
         }
       }
-    }
+    },
+        development: {
+          dialect: 'postgres', 
+          host: 'localhost',
+          username: 'your_username',
+          password: 'your_password',
+          database: 'your_database_name',
+        },
+      };
+
+      
+      
+      
+      
+      
   };
   
