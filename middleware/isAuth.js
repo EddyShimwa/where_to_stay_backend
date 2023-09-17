@@ -9,6 +9,7 @@ const User = db.User;
 const isAuth = async (req, res, next) => {
   try {
     const token = req.header("Authorization");
+
     if (!token) {
         return res
           .status(401)
@@ -16,11 +17,8 @@ const isAuth = async (req, res, next) => {
       }
 
     let decoded;
-
         decoded = jwt.verify(token, process.env.JWT_SECRET);
-
      const user = await User.findOne({ where: { id: decoded.id } });
-     // checking if the user exists 
 
         if (!user) {
           return res.status(404).json({ msg: "User does not exist" });
@@ -31,6 +29,9 @@ const isAuth = async (req, res, next) => {
 
   }
   catch (err) {
+    // console.log(err)
+    console.log("Error:", err.message);
+    // console.log(res)
     return res.status(401).json({ msg: "Token is not Valid" });  
   }
   

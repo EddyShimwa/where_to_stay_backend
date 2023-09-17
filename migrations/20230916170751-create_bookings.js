@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Applications', {
+    await queryInterface.createTable('bookings', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -27,9 +27,9 @@ module.exports = {
       },
     });
 
-    await queryInterface.addConstraint('Applications', {
+    await queryInterface.addConstraint('bookings', {
       type: 'foreign key',
-      name: 'FK_Application_Student',
+      name: 'FK_Booking_Student',
       fields: ['student_id'], 
       references: {
         table: 'users',
@@ -38,9 +38,9 @@ module.exports = {
       onDelete: 'CASCADE',
     });
 
-    await queryInterface.addConstraint('Applications', {
+    await queryInterface.addConstraint('bookings', {
       type: 'foreign key',
-      name: 'FK_Application_Property',
+      name: 'FK_Booking_Property',
       fields: ['property_id'],
       references: {
         table: 'Properties',
@@ -51,6 +51,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Applications');
+    await queryInterface.dropTable('bookings');
   }
 };

@@ -8,17 +8,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Routes
-// const studentRoutes = require('./routes/students');
-// const landlordRoutes = require('./routes/landlords');
+const studentRoutes = require('./routes/students');
+const landlordRoutes = require('./routes/landlords');
 const propertyRoutes = require('./routes/properties');
-const applicationRoutes = require('./routes/applications');
+// const applicationRoutes = require('./routes/applications');
 const authsRouter = require('./routes/auths');
 
 // using routes
-// app.use('/api', studentRoutes);
-// app.use('/api', checkAuth, landlordRoutes);
+app.use('/api', studentRoutes);
+app.use('/api', landlordRoutes);
 app.use('/api', propertyRoutes);
-app.use('/api', applicationRoutes)
+// app.use('/api', applicationRoutes)
 app.use('/api', authsRouter);
 
 

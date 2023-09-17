@@ -1,4 +1,3 @@
-const { Sequelize, DataTypes } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
@@ -40,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     // Associations
     User.associate = (models) => {
        if(models.role === 'student'){
-        User.hasMany(models.Application, {
+        User.hasMany(models.Booking, {
             foreignKey: 'userId', 
             onDelete: 'CASCADE',
         });

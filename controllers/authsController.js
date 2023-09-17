@@ -5,15 +5,13 @@ const jwt = require('jsonwebtoken');
 dotenv.config();
 
 const User = db.User;
-const Property = db.Property;
-const Application = db.Application; 
 
 // const User = db.User;
 const provideToken = (id, email) => {
-  const token = jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  return token;
-};
-
+  const token = jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  console.log(token);
+  return "Bearer " + token;
+}
 
 // Sign up
 const registerUser = async (req, res) => {
