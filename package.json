@@ -8,6 +8,9 @@
     "start": "nodemon server.js",
     "build": "npm install && sequelize db:migrate "
   },
+  "engines": {
+    "node": ">=14 <15"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
