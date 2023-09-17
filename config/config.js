@@ -9,17 +9,17 @@ module.exports = {
           rejectUnauthorized: false 
       },
     },
-    development: {
-       dialect: 'postgres',
-        url: process.env.DEV_DATABASE_URL,
-        dialectOptions: {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false
-          },
+    // development: {
+    //    dialect: 'postgres',
+    //     url: process.env.DEV_DATABASE_URL,
+    //     dialectOptions: {
+    //       ssl: {
+    //         require: true,
+    //         rejectUnauthorized: false
+    //       },
 
-    },
+    // },
 
 
 }
-}
+
