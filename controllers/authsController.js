@@ -34,6 +34,10 @@ const registerUser = async (req, res) => {
       return res.status(409).json({ error: 'Email already exists' });
     }
 
+    if (!password || password.trim() === '') {
+      return res.status(400).json({ error: 'Password is required' });
+    }
+
     const hashedPassword = bcrypt.hashSync(password.trim(), Number(process.env.SALT_ROUNDS));
     const user = await User.create({
       firstName: firstName.toLowerCase(),
