@@ -72,7 +72,7 @@ const login = async (req, res) => {
       where: {
         email,
       },
-      attributes: ['id', 'email', 'password'],
+      attributes: ['id', 'email', 'password', 'role'],
     });
 
     if (!user) {
