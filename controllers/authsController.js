@@ -56,7 +56,7 @@ const registerUser = async (req, res) => {
 
     const token = provideToken(user.id, email);
 
-    return res.status(201).json({ message: 'Student registered successfully', userResponse, token });
+    return res.status(201).json({ message: `${role} registered successfully`, userResponse, token });
   } catch (error) {
     console.log(error)
     return res.status(500).json({ error: 'Internal Server Error detected' });
