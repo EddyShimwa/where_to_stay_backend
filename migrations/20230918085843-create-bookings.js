@@ -30,10 +30,10 @@ module.exports = {
     await queryInterface.addConstraint('bookings', {
       type: 'foreign key',
       name: 'FK_Booking_Student',
-      fields: ['student_id'], 
+      fields: ['student_id'],
       references: {
         table: 'users',
-        field: 'id', 
+        field: 'id',
       },
       onDelete: 'CASCADE',
     });

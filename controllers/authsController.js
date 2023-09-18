@@ -20,11 +20,10 @@ const registerUser = async (req, res) => {
       firstName,
       lastName,
       email,
+      phoneNumber,
       password,
       role,
     } = req.body;
-
-    // Check if a User with the given email exists
 
     const existingUser = await User.findOne({
       where: { email },
@@ -43,6 +42,7 @@ const registerUser = async (req, res) => {
       firstName: firstName.toLowerCase(),
       lastName: lastName.toLowerCase(),
       email,
+      phoneNumber,
       password: hashedPassword,
       role: role.toLowerCase(),
     });
@@ -51,6 +51,7 @@ const registerUser = async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      phoneNumber: user.phoneNumber,
       role: user.role,
     };
 
@@ -71,7 +72,7 @@ const login = async (req, res) => {
       where: {
         email,
       },
-      attributes: ['id', 'email', 'password', 'role'],
+      attributes: ['id', 'email', 'role'],
     });
 
     if (!user) {
