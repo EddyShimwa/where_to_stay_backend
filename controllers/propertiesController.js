@@ -1,77 +1,134 @@
-const pool = require('../config/config');
-
-const getAllProperties = async (req, res) => {
-  try {
-    const query = 'SELECT * FROM properties';
-    const { rows } = await pool.query(query);
-    res.json(rows);
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-const getPropertyById = async (req, res) => {
-  const propertyId = req.params.id;
-  try {
-    const query = 'SELECT * FROM properties WHERE id = $1';
-    const values = [propertyId];
-    const { rows } = await pool.query(query, values);
-    if (rows.length === 0) {
-      res.status(404).json({ error: 'Property not found' });
-    } else {
-      res.json(rows[0]);
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+const db = require('../models');
+const Property = db.Property;
 
 const createProperty = async (req, res) => {
-  const { name, location, price, bedrooms, amenities, description } = req.body;
-  try {
-    const query = 'INSERT INTO properties (name, location, price, bedrooms, amenities, description) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = [name, location, price, bedrooms, amenities, description];
-    const { rows } = await pool.query(query, values);
-    res.status(201).json(rows[0]);
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    const { description, price, location, property_type, image, isAvailable, number_rooms } = req.body;
+    try {
+      const newProperty = await Property.create({
+        description,
+        price,
+        location,
+        property_type,
+        image,
+        isAvailable,
+        number_rooms,
+        userId: req.user.id,
+      });
+      console.log('New Property Created:', newProperty);
+      res.status(201).json(newProperty);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
-};
 
-const updateProperty = async (req, res) => {
-  const propertyId = req.params.id;
-  const { name, location, price, bedrooms, amenities, description } = req.body;
-  try {
-    const query = 'UPDATE properties SET name = $1, location = $2, price = $3, bedrooms = $4, amenities = $5, description = $6 WHERE id = $7 RETURNING *';
-    const values = [name, location, price, bedrooms, amenities, description, propertyId];
-    const { rows } = await pool.query(query, values);
-    res.json(rows[0]);
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+  const getAllProperties = async (req, res) => {
+    try {
+      const properties = await Property.findAll({
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'image', 'isAvailable', 'number_rooms'],
+      });
+      res.status(200).json(properties);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
-};
+  const getPropertyById = async (req, res) => {
+    const propertyId = req.params.id;
+    try {
+      const property = await Property.findOne({
+        where: {
+          id: propertyId,
+        },
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'image', 'isAvailable', 'number_rooms'],
+      });
+      if (!property) {
+        res.status(404).json({ error: 'Property not found' });
+      } else {
+        res.status(200).json(property);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 
-const deleteProperty = async (req, res) => {
-  const propertyId = req.params.id;
-  try {
-    const query = 'DELETE FROM properties WHERE id = $1';
-    const values = [propertyId];
-    await pool.query(query, values);
-    res.json({ message: 'Property deleted successfully' });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+  // updade property
+
+  const updateProperty = async (req, res) => {
+    const propertyId = req.params.id;
+    const { description, price, location, property_type, image, isAvailable, number_rooms } = req.body;
+    
+    try {
+      const property = await Property.findOne({
+        where: {
+          id: propertyId,
+        },
+      });
+  
+      if (!property) {
+        res.status(404).json({ error: 'Property not found' });
+        return;
+      }
+  
+      // Check if the user making the request is the owner of the property
+      if (property.userId !== req.user.id) {
+        res.status(403).json({ error: 'You are not authorized to update this property' });
+        return;
+      }
+  
+      await property.update({
+        description,
+        price,
+        location,
+        property_type,
+        image,
+        isAvailable,
+        number_rooms,
+      });
+  
+      res.status(200).json(property);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
-};
+  
+  
+  // delete property
+  const deleteProperty = async (req, res) => {
+    const propertyId = req.params.id;
+    
+    try {
+      const property = await Property.findOne({
+        where: {
+          id: propertyId,
+        },
+      });
+  
+      if (!property) {
+        res.status(404).json({ error: 'Property not found' });
+        return;
+      }
+  
+      // Check if the user making the request is the owner of the property
+      if (property.userId !== req.user.id) {
+        res.status(403).json({ error: 'You are not authorized to delete this property' });
+        return;
+      }
+  
+      await property.destroy();
+      res.status(204).json({ message: 'Property deleted successfully' });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 
 module.exports = {
-  getAllProperties,
-  getPropertyById,
-  createProperty,
-  updateProperty,
-  deleteProperty,
-};
+    createProperty,
+    getAllProperties,
+    getPropertyById,
+    updateProperty,
+    deleteProperty
+}
