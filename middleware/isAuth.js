@@ -40,7 +40,7 @@ const isAuth = async (req, res, next) => {
 const isStudent = async (req, res, next) => {
   try {
     if(req.user.role !== 'student') {
-      return res.status(401).json({ msg: "You are not a student" });
+      return res.status(401).json({ msg: "You are not a student to make this request" });
     }
   next();
 
@@ -55,7 +55,7 @@ const isStudent = async (req, res, next) => {
 const isLandLord = async (req, res, next) => {
   try {
     if(req.user.role !== 'landlord') {
-      return res.status(401).json({ msg: "You are not a landlord" });
+      return res.status(401).json({ msg: "You are not a landlord landlord to make this request" });
     }
 
   next();
