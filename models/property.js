@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   }, {
-    tableName: 'properties',
+    tableName: 'Properties',
     timestamps: true,
   },);
 
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId', 
         onDelete: 'CASCADE',
     });
-    Property.hasMany(models.Application, {
+    Property.hasMany(models.Booking, {
         foreignKey: 'propertyId', 
         onDelete: 'CASCADE',
     });

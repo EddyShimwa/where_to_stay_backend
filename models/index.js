@@ -34,6 +34,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     // db.Student = require('../models/student')(sequelize, DataTypes);
     // db.Landlord = require('./landlord')(sequelize, DataTypes);
     db.Property = require('../models/property')(sequelize, DataTypes);
-    db.booking = require('../models/booking')(sequelize, DataTypes);
+    db.Booking = require('../models/booking')(sequelize, DataTypes);
 
     module.exports = db;

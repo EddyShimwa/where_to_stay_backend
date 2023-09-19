@@ -20,16 +20,18 @@ app.use(cors({
 const studentRoutes = require('./routes/students');
 const landlordRoutes = require('./routes/landlords');
 const propertyRoutes = require('./routes/properties');
+const bookingRoutes = require('./routes/bookings');
 const authsRouter = require('./routes/auths');
-
+const welcome = require('./routes/welcome');
 // using routes
+app.get('/', welcome);
 app.use('/api', studentRoutes);
 app.use('/api', landlordRoutes);
 app.use('/api', propertyRoutes);
-// app.use('/api', applicationRoutes)
+app.use('/api', bookingRoutes);
 app.use('/api', authsRouter);
 
 
-app.listen(port, () => console.log(`Server running on port ${port}...`));
+app.listen(port, () => console.log(`Server running on port ${port}/api`));
 
 

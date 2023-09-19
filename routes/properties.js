@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const propertiesController = require('../controllers/propertiesController');
+const { isAuth, isLandLord } = require('../middleware/isAuth');
 
-router.post('/properties', propertiesController.createProperty);
+router.post('/properties/create', isAuth, isLandLord, propertiesController.createProperty);
 
-router.get('/properties', propertiesController.getAllProperties) ; 
+router.get('/properties/all', propertiesController.getAllProperties); 
 
 router.get('/properties/:id', propertiesController.getPropertyById); 
 
-// router.put('/:id', propertiesController.updatePropertyById); // for updating property information by ID
+router.put('/:id',isAuth, isLandLord, propertiesController.updateProperty);
 
-// router.delete('/:id', propertiesController.deletePropertyById); // Route to delete landlord information by ID
+router.delete('/:id', isAuth, isLandLord, propertiesController.deleteProperty); 
 
 module.exports = router;
