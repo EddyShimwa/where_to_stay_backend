@@ -1,31 +1,65 @@
+const cloudinary = require('cloudinary').v2;
+
 const db = require('../models');
 const Property = db.Property;
 
+// cloudinary config
+
+cloudinary.config({ 
+  cloud_name: 'dqgncfpxo', 
+  api_key: '418163194637529', 
+  api_secret: 'hvLLJJtfnBAIWCepTVTmnp87SYk' 
+});
+
 const createProperty = async (req, res) => {
-    const { description, price, location, property_type, image, isAvailable, number_rooms } = req.body;
-    try {
-      const newProperty = await Property.create({
-        description,
-        price,
-        location,
-        property_type,
-        image,
-        isAvailable,
-        number_rooms,
-        userId: req.user.id,
-      });
-      console.log('New Property Created:', newProperty);
-      res.status(201).json(newProperty);
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
+  const {
+    description,
+    price,
+    location,
+    property_type,
+    imageUrls, 
+    isAvailable,
+    number_rooms,
+    number_of_bathrooms,
+  } = req.body;
+
+  try {
+    const uploadedImages = await Promise.all(
+      imageUrls.map(async (imageUrl) => {
+        const result = await cloudinary.uploader.upload(imageUrl, {
+          folder: 'property_images', 
+        });
+        return result.secure_url;
+      })
+    );
+
+    const newProperty = await Property.create({
+      description,
+      price,
+      location,
+      property_type,
+      imageUrls: uploadedImages, 
+      isAvailable,
+      number_rooms,
+      number_of_bathrooms,
+      userId: req.user.id,
+    });
+
+    console.log('req.body:', req.body); 
+    console.log('imageUrls:', imageUrls);
+
+    console.log('New Property Created:', newProperty);
+    res.status(201).json(newProperty);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
+};
 
   const getAllProperties = async (req, res) => {
     try {
       const properties = await Property.findAll({
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'image', 'isAvailable', 'number_rooms'],
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms'],
       });
       res.status(200).json(properties);
     } catch (error) {
@@ -40,7 +74,7 @@ const createProperty = async (req, res) => {
         where: {
           id: propertyId,
         },
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'image', 'isAvailable', 'number_rooms'],
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms'],
       });
       if (!property) {
         res.status(404).json({ error: 'Property not found' });
@@ -57,7 +91,7 @@ const createProperty = async (req, res) => {
 
   const updateProperty = async (req, res) => {
     const propertyId = req.params.id;
-    const { description, price, location, property_type, image, isAvailable, number_rooms } = req.body;
+    const { description, price, location, property_type, imageUrls, isAvailable, number_rooms } = req.body;
     
     try {
       const property = await Property.findOne({
@@ -82,7 +116,7 @@ const createProperty = async (req, res) => {
         price,
         location,
         property_type,
-        image,
+        imageUrls,
         isAvailable,
         number_rooms,
       });
