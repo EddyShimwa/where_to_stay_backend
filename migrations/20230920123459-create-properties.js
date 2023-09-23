@@ -25,8 +25,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      image: {
-        type: Sequelize.STRING,
+      imageUrls: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: false,
       },
       isAvailable: {
@@ -34,6 +34,10 @@ module.exports = {
         allowNull: false,
       },
       number_rooms: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      number_of_bathrooms: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

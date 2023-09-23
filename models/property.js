@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    image: {
-      type: DataTypes.STRING,
+    imageUrls: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false
     },
 
@@ -33,7 +33,11 @@ module.exports = (sequelize, DataTypes) => {
     number_rooms: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },  
+    },
+    number_of_bathrooms: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
