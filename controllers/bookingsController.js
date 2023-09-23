@@ -3,7 +3,7 @@ const Booking = db.Booking;
 const Property = db.Property;
 const User = db.User;
 
-const createBooking = async (req, res) => {
+const createBooking = async (req, res, io) => {
   const { property_id } = req.body;
 
   try {
@@ -55,7 +55,7 @@ const createBooking = async (req, res) => {
 };
 //cancel booking 
 
-const cancelBooking = async (req, res) => {
+const cancelBooking = async (req, res, io) => {
   const bookingId = req.params.id;
   try {
     const booking = await Booking.findOne({
