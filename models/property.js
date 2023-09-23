@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    bookings_count: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false

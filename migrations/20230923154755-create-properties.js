@@ -41,6 +41,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      bookings_count: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -55,7 +60,6 @@ module.exports = {
       },
     });
   },
-
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Properties');
   }
