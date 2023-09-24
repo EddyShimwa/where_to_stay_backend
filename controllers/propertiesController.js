@@ -45,7 +45,7 @@ const createProperty = async (req, res) => {
   const getAllProperties = async (req, res) => {
     try {
       const properties = await Property.findAll({
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'bookings_count'],
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count'],
       });
       res.status(200).json(properties);
     } catch (error) {
@@ -53,6 +53,23 @@ const createProperty = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
+  const getLandlordProperties = async (req, res) => {
+    try {
+      const properties = await Property.findAll({
+        where: {
+          userId: req.user.id, 
+        },
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count'],
+      });
+      res.status(200).json(properties);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
+
   const getPropertyById = async (req, res) => {
     const propertyId = req.params.id;
     try {
@@ -60,7 +77,7 @@ const createProperty = async (req, res) => {
         where: {
           id: propertyId,
         },
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'bookings_count' ],
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count' ],
       });
       if (!property) {
         res.status(404).json({ error: 'Property not found' });
@@ -77,7 +94,7 @@ const createProperty = async (req, res) => {
 
   const updateProperty = async (req, res) => {
     const propertyId = req.params.id;
-    const { description, price, location, property_type, imageUrls, isAvailable, number_rooms } = req.body;
+    const { description, price, location, property_type, imageUrls, isAvailable, number_rooms, number_of_bathrooms } = req.body;
     
     try {
       const property = await Property.findOne({
@@ -105,6 +122,7 @@ const createProperty = async (req, res) => {
         imageUrls,
         isAvailable,
         number_rooms,
+        number_of_bathrooms,
       });
   
       res.status(200).json(property);
@@ -138,7 +156,7 @@ const createProperty = async (req, res) => {
       }
   
       await property.destroy();
-      res.status(204).json({ message: 'Property deleted successfully' });
+      res.status(200).json({ message: 'Property deleted successfully' });
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -149,6 +167,7 @@ module.exports = {
     createProperty,
     getAllProperties,
     getPropertyById,
+    getLandlordProperties,
     updateProperty,
     deleteProperty
 }

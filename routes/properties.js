@@ -9,8 +9,11 @@ router.get('/properties/all', propertiesController.getAllProperties);
 
 router.get('/properties/:id', propertiesController.getPropertyById); 
 
-router.put('/properties/:id',isAuth, isLandLord, propertiesController.updateProperty);
+router.get('/my-properties', isAuth, isLandLord, propertiesController.getLandlordProperties);
+
+router.put('/properties/:id', isAuth, isLandLord, propertiesController.updateProperty);
 
 router.delete('/properties/delete/:id', isAuth, isLandLord, propertiesController.deleteProperty); 
+
 
 module.exports = router;
