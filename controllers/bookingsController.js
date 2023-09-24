@@ -3,7 +3,7 @@ const Booking = db.Booking;
 const Property = db.Property;
 const User = db.User;
 
-const createBooking = async (req, res) => {
+const createBooking = async (req, res ) => {
   const { property_id } = req.body;
 
   try {
@@ -41,8 +41,8 @@ const createBooking = async (req, res) => {
     });
      await property.increment('bookings_count');
 
-     const landlordSocket = io.to(`landlord-${property.landlord_id}`);
-     landlordSocket.emit('newBooking', { booking: newBooking });
+    //  const landlordSocket = io.to(`landlord-${property.landlord_id}`);
+    //  landlordSocket.emit('newBooking', { booking: newBooking });
 
     res.status(201).json(newBooking);
   } catch (error) {
@@ -52,7 +52,7 @@ const createBooking = async (req, res) => {
 };
 //cancel booking 
 
-const cancelBooking = async (req, res, io) => {
+const cancelBooking = async (req, res) => {
   const bookingId = req.params.id;
   try {
     const booking = await Booking.findOne({
