@@ -1,13 +1,14 @@
 const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
 const cors = require('cors');
+const http = require('http');
+const socketIo = require('socket.io')
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
 
-const port = process.env.PORT || 3000;
+const io = socketIo(server)
+
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(express.json());
@@ -28,23 +29,13 @@ const authsRouter = require('./routes/auths');
 const welcome = require('./routes/welcome');
 
 // Mount routes
-app.get('/', welcome);
+app.use('/', welcome);
 app.use('/api', studentRoutes);
 app.use('/api', landlordRoutes);
 app.use('/api', propertyRoutes);
 app.use('/api', bookingRoutes);
 app.use('/api', authsRouter);
 
-// Socket.io logic
-io.on('connection', (socket) => {
-  console.log('A user connected');
-  
-  // Handle your Socket.io logic here
-
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
-  });
-});
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);

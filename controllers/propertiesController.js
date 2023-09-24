@@ -1,15 +1,6 @@
-const cloudinary = require('cloudinary').v2;
-
 const db = require('../models');
 const Property = db.Property;
 
-// cloudinary config
-
-cloudinary.config({ 
-  cloud_name: 'dqgncfpxo', 
-  api_key: '418163194637529', 
-  api_secret: 'hvLLJJtfnBAIWCepTVTmnp87SYk' 
-});
 
 const createProperty = async (req, res) => {
   const {
@@ -24,21 +15,12 @@ const createProperty = async (req, res) => {
   } = req.body;
 
   try {
-    const uploadedImages = await Promise.all(
-      imageUrls.map(async (imageUrl) => {
-        const result = await cloudinary.uploader.upload(imageUrl, {
-          folder: 'property_images', 
-        });
-        return result.secure_url;
-      })
-    );
-
     const newProperty = await Property.create({
       description,
       price,
       location,
       property_type,
-      imageUrls: uploadedImages, 
+      imageUrls, 
       isAvailable,
       number_rooms,
       number_of_bathrooms,
@@ -46,8 +28,6 @@ const createProperty = async (req, res) => {
     });
 
     console.log('req.body:', req.body); 
-    console.log('imageUrls:', imageUrls);
-
     console.log('New Property Created:', newProperty);
     res.status(201).json(newProperty);
   } catch (error) {
@@ -59,7 +39,7 @@ const createProperty = async (req, res) => {
   const getAllProperties = async (req, res) => {
     try {
       const properties = await Property.findAll({
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms'],
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'bookings_count'],
       });
       res.status(200).json(properties);
     } catch (error) {
@@ -74,7 +54,7 @@ const createProperty = async (req, res) => {
         where: {
           id: propertyId,
         },
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms'],
+        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'bookings_count' ],
       });
       if (!property) {
         res.status(404).json({ error: 'Property not found' });

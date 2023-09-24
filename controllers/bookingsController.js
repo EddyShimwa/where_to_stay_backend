@@ -3,7 +3,7 @@ const Booking = db.Booking;
 const Property = db.Property;
 const User = db.User;
 
-const createBooking = async (req, res, io) => {
+const createBooking = async (req, res) => {
   const { property_id } = req.body;
 
   try {
@@ -41,11 +41,8 @@ const createBooking = async (req, res, io) => {
     });
      await property.increment('bookings_count');
 
-    // Send a notification to the landlord (replace with your notification logic)
-    const landlordUserId = property.userId;
-    const notificationContent = `New booking for your property: ${property.description}. Contact student at ${user.email}.`;
-
-   io.to(landlordUserId).emit('newBooking', notificationContent);
+     const landlordSocket = io.to(`landlord-${property.landlord_id}`);
+     landlordSocket.emit('newBooking', { booking: newBooking });
 
     res.status(201).json(newBooking);
   } catch (error) {
