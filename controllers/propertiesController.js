@@ -30,6 +30,12 @@ const createProperty = async (req, res) => {
     console.log('req.body:', req.body); 
     console.log('New Property Created:', newProperty);
     res.status(201).json(newProperty);
+
+    if (!description || !price || !location || !property_type || !imageUrls || !isAvailable || !number_rooms || !number_of_bathrooms) {
+      res.status(400).json({ error: 'Please provide all required fields' });
+      return;
+    }
+
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });

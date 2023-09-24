@@ -11,6 +11,6 @@ router.get('/properties/:id', propertiesController.getPropertyById);
 
 router.put('/properties/:id',isAuth, isLandLord, propertiesController.updateProperty);
 
-router.delete('/properties/:id', isAuth, isLandLord, propertiesController.deleteProperty); 
+router.delete('/properties/delete/:id', isAuth, isLandLord, propertiesController.deleteProperty); 
 
 module.exports = router;
