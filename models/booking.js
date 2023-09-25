@@ -22,12 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     Booking.associate = (models) => {
       Booking.belongsTo(models.User, {
         foreignKey: 'student_id',
-        targetKey: 'id',
         onDelete: 'CASCADE',
-        constraints: false, 
-        scope: {
-          role: 'student', 
-        },
+        as: 'student',
       });
       Booking.belongsTo(models.Property, {
         foreignKey: 'property_id',

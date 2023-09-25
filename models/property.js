@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
     });
     Property.hasMany(models.Booking, {
-        foreignKey: 'propertyId', 
+        foreignKey: 'property_id', 
         onDelete: 'CASCADE',
     });
 };

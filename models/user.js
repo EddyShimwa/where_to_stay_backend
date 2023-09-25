@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         id: {
@@ -42,20 +41,20 @@ module.exports = (sequelize, DataTypes) => {
 
     // Associations
     User.associate = (models) => {
-       if(models.role === 'student'){
-        User.hasMany(models.Booking, {
-            foreignKey: 'userId', 
+        if (models.role === 'student') {
+          User.hasMany(models.Booking, {
+            foreignKey: 'student_id',
             onDelete: 'CASCADE',
-        });
-       }
-         else if(models.role === 'landlord'){
-            User.hasMany(models.Property, {
-                foreignKey: 'userId', 
-                onDelete: 'CASCADE',
-            });
-         }
-    };
-
+            as: 'bookings', 
+          });
+        } else if (models.role === 'landlord') {
+          User.hasMany(models.Property, {
+            foreignKey: 'landlord_id',
+            onDelete: 'CASCADE',
+            as: 'properties', 
+          });
+        }
+    }
     return User;
 };
 

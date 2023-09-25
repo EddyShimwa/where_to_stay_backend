@@ -1,8 +1,7 @@
 const db = require('../models');
 
-const User = db.User;
-const Property = db.Property;
 const Booking = db.Booking;
+const User = db.User;
 
 const getAllLandlords = async (req, res) => {
   
@@ -38,10 +37,14 @@ const getStudentsForProperty = async (req, res) => {
       ],
     });
 
+
+
     if (bookings.length === 0) {
       res.status(404).json({ message: 'No students have booked this property' });
       return;
     }
+
+
 
     res.status(200).json(bookings);
   } catch (error) {
@@ -49,6 +52,7 @@ const getStudentsForProperty = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 
 
