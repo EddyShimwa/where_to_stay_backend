@@ -2,6 +2,7 @@ const db = require('../models');
 
 const User = db.User;
 const Property = db.Property;
+const Booking = db.Booking;
 
 const getAllLandlords = async (req, res) => {
   
@@ -18,6 +19,40 @@ const getAllLandlords = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
       }
 }
+
+const getStudentsForProperty = async (req, res) => {
+  const propertyId = req.params.propertyId;
+
+  try {
+    // Find all bookings for the given property
+    const bookings = await Booking.findAll({
+      where: {
+        property_id: propertyId,
+      },
+      include: [
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'firstName', 'lastName', 'email'],
+        },
+      ],
+    });
+
+    if (bookings.length === 0) {
+      res.status(404).json({ message: 'No students have booked this property' });
+      return;
+    }
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
+
 
 const getLandlordById = async (req, res) => {
 
@@ -45,6 +80,7 @@ const getLandlordById = async (req, res) => {
 
 module.exports = {
    getAllLandlords,
+    getStudentsForProperty,
     getLandlordById,
   }
 
