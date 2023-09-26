@@ -1,5 +1,6 @@
 const db = require('../models');
 const Property = db.Property;
+const User = db.User; 
 
 
 const createProperty = async (req, res) => {
@@ -84,6 +85,13 @@ const createProperty = async (req, res) => {
           id: propertyId,
         },
         attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count' ],
+        include: [
+          {
+            model: User, 
+            as: 'User',
+            attributes: ['firstName', 'lastName', 'email', 'phoneNumber'],
+          },
+        ],
       });
       if (!property) {
         res.status(404).json({ error: 'Property not found' });

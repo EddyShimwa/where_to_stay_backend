@@ -2,6 +2,7 @@ const db = require('../models');
 
 const Booking = db.Booking;
 const User = db.User;
+const Property = db.Property;
 
 const getAllLandlords = async (req, res) => {
   
@@ -23,35 +24,43 @@ const getStudentsForProperty = async (req, res) => {
   const propertyId = req.params.propertyId;
 
   try {
-    // Find all bookings for the given property
-    const bookings = await Booking.findAll({
-      where: {
-        property_id: propertyId,
-      },
-      include: [
-        {
-          model: User,
-          as: 'student',
-          attributes: ['id', 'firstName', 'lastName', 'email'],
-        },
-      ],
-    });
+    const property = await Property.findByPk(propertyId);
 
-
-
-    if (bookings.length === 0) {
-      res.status(404).json({ message: 'No students have booked this property' });
+    if (!property) {
+      res.status(404).json({ message: 'Property not found' });
       return;
     }
 
+    if (property.landlord_id === req.user.id) {
+      const bookings = await Booking.findAll({
+        where: {
+          property_id: propertyId,
+        },
+        include: [
+          {
+            model: User,
+            as: 'student',
+            attributes: ['id', 'firstName', 'lastName', 'email'],
+          },
+        ],
+      });
 
+      if (bookings.length === 0) {
+        res.status(404).json({ message: 'No students have booked this property' });
+        return;
+      }
 
-    res.status(200).json(bookings);
+      res.status(200).json(bookings);
+    } else {
+      res.status(403).json({ error: 'Access denied. Only the property owner can view student bookings.' });
+    }
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+
 
 
 
