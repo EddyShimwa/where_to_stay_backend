@@ -57,10 +57,12 @@ module.exports = (sequelize, DataTypes) => {
     Property.belongsTo(models.User, { 
         foreignKey: 'userId', 
         onDelete: 'CASCADE',
+        
     });
     Property.hasMany(models.Booking, {
         foreignKey: 'property_id', 
         onDelete: 'CASCADE',
+        as: 'bookings',
     });
 };
     return Property;

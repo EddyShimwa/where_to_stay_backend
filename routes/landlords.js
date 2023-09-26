@@ -8,6 +8,6 @@ router.get('/landlords', isAuth, landlordController.getAllLandlords) ;
 
 router.get('/landlords/:id', isAuth, isLandLord, landlordController.getLandlordById);
 
-router.get('/properties/:propertyId/students', isAuth, isLandLord, landlordController.getStudentsForProperty);
+router.get('/studentsBooked/:id', isAuth, isLandLord, landlordController.getStudentsBooked);
 
 module.exports = router;

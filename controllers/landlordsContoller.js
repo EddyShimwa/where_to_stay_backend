@@ -1,4 +1,6 @@
+const { id } = require('@hapi/joi/lib/base');
 const db = require('../models');
+const property = require('../models/property');
 
 const Booking = db.Booking;
 const User = db.User;
@@ -20,51 +22,43 @@ const getAllLandlords = async (req, res) => {
       }
 }
 
-const getStudentsForProperty = async (req, res) => {
-  const propertyId = req.params.propertyId;
-
+const getStudentsBooked = async (req, res) => {
+   // Assuming you can get the landlord's ID from the request // Assuming you can get the property's ID from the request
+   const propertyId = req.params.id;
   try {
-    const property = await Property.findByPk(propertyId);
+    // Check if the property belongs to the specified landlord
+    const property = await Property.findOne({
+      where: {
+        id: propertyId,
+        userId: req.user.id,
+      },
+    });
 
     if (!property) {
-      res.status(404).json({ message: 'Property not found' });
-      return;
+      return res.status(404).json({ error: 'Property not found or does not belong to the specified landlord' });
     }
 
-    if (property.landlord_id === req.user.id) {
-      const bookings = await Booking.findAll({
-        where: {
-          property_id: propertyId,
+    // Retrieve the list of students who have booked this property
+    const students = await Booking.findAll({
+      where: {
+        property_id: propertyId,
+      },
+      attributes: ['student_id'], // You can retrieve other student information as needed
+      include: [
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'firstName', 'lastName', 'email'],
         },
-        include: [
-          {
-            model: User,
-            as: 'student',
-            attributes: ['id', 'firstName', 'lastName', 'email'],
-          },
-        ],
-      });
+      ],
+    });
 
-      if (bookings.length === 0) {
-        res.status(404).json({ message: 'No students have booked this property' });
-        return;
-      }
-
-      res.status(200).json(bookings);
-    } else {
-      res.status(403).json({ error: 'Access denied. Only the property owner can view student bookings.' });
-    }
+    res.status(200).json(students);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-
-
-
-
-
 
 
 const getLandlordById = async (req, res) => {
@@ -93,8 +87,8 @@ const getLandlordById = async (req, res) => {
 
 module.exports = {
    getAllLandlords,
-    getStudentsForProperty,
     getLandlordById,
+    getStudentsBooked
   }
 
 
