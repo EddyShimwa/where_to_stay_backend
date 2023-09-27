@@ -9,7 +9,7 @@ const getAllStudents = async (req, res) => {
           where: {
             role: 'student',
           },
-          attributes: ['id', 'firstName', 'lastName', 'email', 'role'], 
+          attributes: ['id', 'firstName', 'lastName', 'email', 'role'], // Add other attributes you want to include
         });
     
         res.status(200).json(students);

@@ -5,6 +5,7 @@ const { isAuth, isStudent } = require('../middleware/isAuth');
 // const ioMiddleware = require('../middleware/ioMiddleware');
 
 router.post('/bookings/create', isAuth, isStudent, bookingsController.createBooking);
+router.get('/my-bookings', isAuth, isStudent, bookingsController.getBookedPropertiesByStudent)
 router.delete('/bookings/cancel/:id', isAuth, isStudent, bookingsController.cancelBooking);
 
 module.exports = router;

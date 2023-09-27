@@ -93,9 +93,46 @@ const cancelBooking = async (req, res) => {
   }
 };
 
+//get student's bookings 
 
+const getBookedPropertiesByStudent = async (req, res) => {
+  try {
+    const bookings = await Booking.findAll({
+      where: {
+        student_id: req.user.id,
+      },
+    });
+
+    if (bookings.length === 0) {
+      res.status(404).json({ message: 'You have not booked any properties' });
+      return;
+    }
+
+    const propertyIds = bookings.map((booking) => booking.property_id);
+
+    // Retrieve property details for the booked properties and include the associated landlord (User)
+    const properties = await Property.findAll({
+      where: {
+        id: propertyIds,
+      },
+      include: [
+        {
+          model: User, 
+          as: 'User', 
+          attributes: ['firstName', 'lastName', 'email', 'phoneNumber'], 
+        },
+      ],
+    });
+
+    res.status(200).json(properties);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 module.exports = {
   createBooking,
+  getBookedPropertiesByStudent,
   cancelBooking
 };
