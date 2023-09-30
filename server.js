@@ -26,6 +26,7 @@ const landlordRoutes = require('./routes/landlords');
 const propertyRoutes = require('./routes/properties');
 const bookingRoutes = require('./routes/bookings');
 const authsRouter = require('./routes/auths');
+const usersRouter = require('./routes/users');
 const welcome = require('./routes/welcome');
 
 // Mount routes
@@ -35,6 +36,7 @@ app.use('/api', landlordRoutes);
 app.use('/api', propertyRoutes);
 app.use('/api', bookingRoutes);
 app.use('/api', authsRouter);
+app.use('/api', usersRouter);
 
 
 server.listen(port, () => {
