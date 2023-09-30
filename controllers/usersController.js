@@ -8,7 +8,7 @@ const getUserProfile = async (req, res) => {
   try {
     const user = await User.findOne({
       where: { id: userId },
-      attributes: ['id', 'firstName', 'lastName','email', 'phone', 'role'],
+      attributes: ['id', 'firstName', 'lastName','email', 'phoneNumber', 'role'],
     });
 
     if (!user) {
