@@ -5,6 +5,9 @@ const socketIo = require('socket.io')
 
 const app = express();
 const server = http.createServer(app);
+const swaggerSetup = require('./swagger');
+
+swaggerSetup(app);
 
 const io = socketIo(server)
 
