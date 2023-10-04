@@ -6,7 +6,6 @@ dotenv.config();
 
 const User = db.User;
 
-// const User = db.User;
 const provideToken = (id, email) => {
   const token = jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '1d' });
   console.log(token);
