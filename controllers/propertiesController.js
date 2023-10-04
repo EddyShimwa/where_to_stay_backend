@@ -37,8 +37,6 @@ const createProperty = async (req, res) => {
 
     console.log('req.body:', req.body); 
     console.log('New Property Created:', newProperty);
-    console.log('Latitude:', latitude);
-    console.log('Longitude:', longitude);
 
     res.status(201).json(newProperty);
 
