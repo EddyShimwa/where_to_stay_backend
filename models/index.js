@@ -33,10 +33,12 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     db.User = require('../models/user')(sequelize, DataTypes);
     db.Property = require('../models/property')(sequelize, DataTypes);
     db.Booking = require('../models/booking')(sequelize, DataTypes);
+    db.Notification = require('../models/notification')(sequelize, DataTypes);
 
     //associations
     db.User.associate(db);
     db.Booking.associate(db);
     db.Property.associate(db);
+    db.Notification.associate(db);
 
     module.exports = db;

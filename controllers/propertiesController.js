@@ -37,9 +37,12 @@ const createProperty = async (req, res) => {
 
     console.log('req.body:', req.body); 
     console.log('New Property Created:', newProperty);
+    console.log('Latitude:', latitude);
+    console.log('Longitude:', longitude);
+
     res.status(201).json(newProperty);
 
-    if (!description || !price || !location || !property_type || !imageUrls || !isAvailable || !number_rooms || !number_of_bathrooms) {
+    if (!description || !price || !property_type || !imageUrls || !isAvailable || !number_rooms || !number_of_bathrooms) {
       res.status(400).json({ error: 'Please provide all required fields' });
       return;
     }
