@@ -68,7 +68,6 @@ const getLandlordById = async (req, res) => {
           role: 'landlord',
         },
         attributes: ['id', 'firstName', 'lastName', 'email', 'role'], 
-        // include: [{ model: Property, as: 'properties', }]
       });
   
       if (!landlord) {
