@@ -27,7 +27,7 @@ const getStudentById = async (req, res) => {
             id: studentId,
             role: 'student',
           },
-          attributes: ['id', 'firstName', 'lastName', 'email', 'role'], // Add other attributes you want to include
+          attributes: ['id', 'firstName', 'lastName', 'email', 'role'],
         });
     
         if (!student) {
