@@ -23,7 +23,6 @@ const getAllLandlords = async (req, res) => {
 }
 
 const getStudentsBooked = async (req, res) => {
-   // Assuming you can get the landlord's ID from the request // Assuming you can get the property's ID from the request
    const propertyId = req.params.id;
   try {
     // Check if the property belongs to the specified landlord
