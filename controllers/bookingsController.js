@@ -18,8 +18,7 @@ const createBooking = async (req, res ) => {
       res.status(404).json({ error: 'Property not found' });
       return;
     }
-
-    // Check if the student has already booked this property
+    
     const existingBooking = await Booking.findOne({
       where: {
         student_id: req.user.id,
