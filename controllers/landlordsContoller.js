@@ -40,7 +40,7 @@ const getStudentsBooked = async (req, res) => {
       where: {
         property_id: propertyId,
       },
-      attributes: ['student_id'], // You can retrieve other student information as needed
+      attributes: ['student_id'], 
       include: [
         {
           model: User,
