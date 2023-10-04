@@ -17,8 +17,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      location: {
+      city: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      street_address: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      location: {
+        type: Sequelize.ARRAY(Sequelize.FLOAT),
         allowNull: false,
       },
       property_type: {
@@ -39,6 +47,10 @@ module.exports = {
       },
       number_of_bathrooms: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      amenities: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: false,
       },
       bookings_count: {
