@@ -38,6 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     Notification.prototype.isRecipientLandlord = async function() {
         const recipientUser = await this.getUser();
         return recipientUser.role === 'landlord';
-    
+    }
     return Notification;
 };
