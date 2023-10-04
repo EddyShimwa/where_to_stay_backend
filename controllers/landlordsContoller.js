@@ -36,7 +36,6 @@ const getStudentsBooked = async (req, res) => {
       return res.status(404).json({ error: 'Property not found or does not belong to the specified landlord' });
     }
 
-    // Retrieve the list of students who have booked this property
     const students = await Booking.findAll({
       where: {
         property_id: propertyId,
