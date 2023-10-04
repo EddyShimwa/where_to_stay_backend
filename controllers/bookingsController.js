@@ -7,21 +7,18 @@ const createBooking = async (req, res ) => {
   const { property_id } = req.body;
 
   try {
-    // Check if the user making the booking is a student
     const user = await User.findByPk(req.user.id);
     if (!user || user.role !== 'student') {
       res.status(403).json({ error: 'Only students can book properties' });
       return;
     }
 
-    // Check if the property with the provided ID exists
     const property = await Property.findByPk(property_id);
     if (!property) {
       res.status(404).json({ error: 'Property not found' });
       return;
     }
-
-    // Check if the student has already booked this property
+    
     const existingBooking = await Booking.findOne({
       where: {
         student_id: req.user.id,

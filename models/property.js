@@ -13,8 +13,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    location: {
+    city: {
       type: DataTypes.STRING,
+      allowNull: false
+    },
+    street_address: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+
+    location: {
+      type: DataTypes.ARRAY(DataTypes.FLOAT),
       allowNull: false
     },
     property_type: {
@@ -36,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     number_of_bathrooms: {
       type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    amenities: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false
     },
     bookings_count: {

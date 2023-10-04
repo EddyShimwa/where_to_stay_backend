@@ -23,10 +23,8 @@ const getAllLandlords = async (req, res) => {
 }
 
 const getStudentsBooked = async (req, res) => {
-   // Assuming you can get the landlord's ID from the request // Assuming you can get the property's ID from the request
    const propertyId = req.params.id;
   try {
-    // Check if the property belongs to the specified landlord
     const property = await Property.findOne({
       where: {
         id: propertyId,
@@ -38,12 +36,11 @@ const getStudentsBooked = async (req, res) => {
       return res.status(404).json({ error: 'Property not found or does not belong to the specified landlord' });
     }
 
-    // Retrieve the list of students who have booked this property
     const students = await Booking.findAll({
       where: {
         property_id: propertyId,
       },
-      attributes: ['student_id'], // You can retrieve other student information as needed
+      attributes: ['student_id'], 
       include: [
         {
           model: User,
@@ -71,7 +68,6 @@ const getLandlordById = async (req, res) => {
           role: 'landlord',
         },
         attributes: ['id', 'firstName', 'lastName', 'email', 'role'], 
-        // include: [{ model: Property, as: 'properties', }]
       });
   
       if (!landlord) {

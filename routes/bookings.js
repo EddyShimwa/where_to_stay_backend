@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bookingsController = require('../controllers/bookingsController');
 const { isAuth, isStudent } = require('../middleware/isAuth');
-// const ioMiddleware = require('../middleware/ioMiddleware');
+
 /**
  * @swagger
  * /bookings/create:

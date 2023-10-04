@@ -6,33 +6,41 @@ const User = db.User;
 const createProperty = async (req, res) => {
   const {
     description,
+    street_address,
+    city,
     price,
-    location,
     property_type,
     imageUrls, 
     isAvailable,
     number_rooms,
+    amenities,
     number_of_bathrooms,
   } = req.body;
 
+ const { latitude, longitude } = req.body.location;
+  
   try {
     const newProperty = await Property.create({
       description,
+      street_address,
+      city,
       price,
-      location,
+      location: [latitude, longitude],
       property_type,
       imageUrls, 
       isAvailable,
       number_rooms,
       number_of_bathrooms,
+      amenities,
       userId: req.user.id,
     });
 
     console.log('req.body:', req.body); 
     console.log('New Property Created:', newProperty);
+
     res.status(201).json(newProperty);
 
-    if (!description || !price || !location || !property_type || !imageUrls || !isAvailable || !number_rooms || !number_of_bathrooms) {
+    if (!description || !price || !property_type || !imageUrls || !isAvailable || !number_rooms || !number_of_bathrooms) {
       res.status(400).json({ error: 'Please provide all required fields' });
       return;
     }
@@ -46,7 +54,7 @@ const createProperty = async (req, res) => {
   const getAllProperties = async (req, res) => {
     try {
       const properties = await Property.findAll({
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count'],
+        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
       });
       res.status(200).json(properties);
     } catch (error) {
@@ -61,7 +69,7 @@ const createProperty = async (req, res) => {
         where: {
           userId: req.user.id, 
         },
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count'],
+        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
       });
 
       //check if there are no properties
@@ -84,7 +92,7 @@ const createProperty = async (req, res) => {
         where: {
           id: propertyId,
         },
-        attributes: ['id', 'description', 'price', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count' ],
+        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count' ],
         include: [
           {
             model: User, 
@@ -108,8 +116,8 @@ const createProperty = async (req, res) => {
 
   const updateProperty = async (req, res) => {
     const propertyId = req.params.id;
-    const { description, price, location, property_type, imageUrls, isAvailable, number_rooms, number_of_bathrooms } = req.body;
-    
+    const { description, price, city, street_address, property_type, imageUrls, isAvailable, number_rooms, number_of_bathrooms, amenities } = req.body;
+    const { latitude, longitude } = req.body.location;
     try {
       const property = await Property.findOne({
         where: {
@@ -131,11 +139,14 @@ const createProperty = async (req, res) => {
       await property.update({
         description,
         price,
-        location,
+        city,
+        street_address,
+        location: [latitude, longitude],
         property_type,
         imageUrls,
         isAvailable,
         number_rooms,
+        amenities,
         number_of_bathrooms,
       });
   
