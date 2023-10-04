@@ -25,7 +25,6 @@ const getAllLandlords = async (req, res) => {
 const getStudentsBooked = async (req, res) => {
    const propertyId = req.params.id;
   try {
-    // Check if the property belongs to the specified landlord
     const property = await Property.findOne({
       where: {
         id: propertyId,
