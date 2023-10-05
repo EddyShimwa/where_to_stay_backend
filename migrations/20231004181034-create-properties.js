@@ -37,10 +37,7 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: false,
       },
-      isAvailable: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
+
       number_rooms: {
         type: Sequelize.INTEGER,
         allowNull: false,

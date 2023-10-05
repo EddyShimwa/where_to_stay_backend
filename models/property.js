@@ -35,10 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
 
-    isAvailable: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
     number_rooms: {
       type: DataTypes.INTEGER,
       allowNull: false
