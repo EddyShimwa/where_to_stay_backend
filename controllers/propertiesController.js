@@ -11,7 +11,6 @@ const createProperty = async (req, res) => {
     price,
     property_type,
     imageUrls, 
-    isAvailable,
     number_rooms,
     amenities,
     number_of_bathrooms,
@@ -28,7 +27,6 @@ const createProperty = async (req, res) => {
       location: [latitude, longitude],
       property_type,
       imageUrls, 
-      isAvailable,
       number_rooms,
       number_of_bathrooms,
       amenities,
@@ -40,7 +38,7 @@ const createProperty = async (req, res) => {
 
     res.status(201).json(newProperty);
 
-    if (!description || !price || !property_type || !imageUrls || !isAvailable || !number_rooms || !number_of_bathrooms) {
+    if (!description || !price || !property_type || !imageUrls || !number_rooms || !number_of_bathrooms) {
       res.status(400).json({ error: 'Please provide all required fields' });
       return;
     }
@@ -54,7 +52,7 @@ const createProperty = async (req, res) => {
   const getAllProperties = async (req, res) => {
     try {
       const properties = await Property.findAll({
-        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
+        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
       });
       res.status(200).json(properties);
     } catch (error) {
@@ -69,7 +67,7 @@ const createProperty = async (req, res) => {
         where: {
           userId: req.user.id, 
         },
-        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
+        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls','number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
       });
 
       //check if there are no properties
@@ -92,7 +90,7 @@ const createProperty = async (req, res) => {
         where: {
           id: propertyId,
         },
-        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'isAvailable', 'number_rooms', 'number_of_bathrooms', 'bookings_count' ],
+        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'number_rooms', 'number_of_bathrooms', 'bookings_count' ],
         include: [
           {
             model: User, 
@@ -116,7 +114,7 @@ const createProperty = async (req, res) => {
 
   const updateProperty = async (req, res) => {
     const propertyId = req.params.id;
-    const { description, price, city, street_address, property_type, imageUrls, isAvailable, number_rooms, number_of_bathrooms, amenities } = req.body;
+    const { description, price, city, street_address, property_type, imageUrls, number_rooms, number_of_bathrooms, amenities } = req.body;
     const { latitude, longitude } = req.body.location;
     try {
       const property = await Property.findOne({
@@ -144,7 +142,6 @@ const createProperty = async (req, res) => {
         location: [latitude, longitude],
         property_type,
         imageUrls,
-        isAvailable,
         number_rooms,
         amenities,
         number_of_bathrooms,
