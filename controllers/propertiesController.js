@@ -69,8 +69,6 @@ const createProperty = async (req, res) => {
         },
         attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls','number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
       });
-
-      //check if there are no properties
       if (properties.length === 0) {
         res.status(404).json({ message: 'You have not uploaded any properties'});
         return;
