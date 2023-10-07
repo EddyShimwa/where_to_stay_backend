@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('bookings', {
+    await queryInterface.createTable("bookings", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,19 +12,23 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'users',
-          key: 'id',
+          model: "users",
+          key: "id",
         },
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
       },
       property_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Properties',
-          key: 'id',
+          model: "Properties",
+          key: "id",
         },
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
+      },
+      status: {
+        type: Sequelize.ENUM("Request Sent", "Pending", "Approved", "Rejected"),
+        defaultValue: "Request Sent",
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -38,7 +42,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('bookings');
+    await queryInterface.dropTable("bookings");
   },
 };
-

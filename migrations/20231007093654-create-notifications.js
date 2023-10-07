@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('notifications', {
+    await queryInterface.createTable("notifications", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,11 +17,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'users',
-          key: 'id',
+          model: "users",
+          key: "id",
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       isRead: {
         type: Sequelize.BOOLEAN,
@@ -38,11 +38,10 @@ module.exports = {
       },
     });
 
-    // Add an index on recipientUserId for performance
-    await queryInterface.addIndex('notifications', ['recipientUserId']);
+    await queryInterface.addIndex("notifications", ["recipientUserId"]);
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('notifications');
+    await queryInterface.dropTable("notifications");
   },
 };

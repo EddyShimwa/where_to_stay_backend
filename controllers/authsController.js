@@ -63,6 +63,50 @@ const registerUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const {
+      firstName,
+      lastName,
+      email,
+      image,
+      phoneNumber,
+    } = req.body;
+
+    const user = await User.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+    }
+
+    await user.update({
+      firstName,
+      lastName,
+      email,
+      image,
+      phoneNumber,
+    });
+
+    const userResponse = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      image: user.image,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+    };
+
+    return res.status(200).json({ message: 'Profile updated successfully', userResponse });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 // Login route
 const login = async (req, res) => {
   try {
@@ -92,7 +136,12 @@ const login = async (req, res) => {
   }
 };
 
+
+
+
+
 module.exports = {
   registerUser,
+  updateUser,
   login,
 };

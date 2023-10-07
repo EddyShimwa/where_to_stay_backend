@@ -47,6 +47,7 @@ const createBooking = async (req, res ) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 //cancel booking 
 
 const cancelBooking = async (req, res) => {
@@ -119,6 +120,13 @@ const getBookedPropertiesByStudent = async (req, res) => {
           attributes: ['firstName', 'lastName', 'email', 'phoneNumber'], 
         },
       ],
+      include : [
+        {
+          model: Booking,
+          as: 'bookings',
+          attributes: ['id', 'student_id', 'property_id', 'status'],
+        },
+      ]
     });
 
     res.status(200).json(properties);
@@ -128,7 +136,85 @@ const getBookedPropertiesByStudent = async (req, res) => {
   }
 };
 
+
+
+const approveBooking = async (req, res) => {
+  const bookingId = req.params.id;
+  try {
+    const booking = await Booking.findOne({
+      where: {
+        id: bookingId,
+        status: 'Request Sent',
+      },
+      include: [{ model: Property, as: 'property' }], 
+    });
+
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found or already approved/rejected' });
+      return;
+    }
+
+    //check if the owner of the property is the one approving the booking
+    if (booking.property.userId !== req.user.id) {
+      res.status(403).json({ error: 'You are not authorized to approve this booking' });
+      return;
+    }
+   
+
+    await booking.update({
+      status: 'Approved',
+    });
+
+    // const studentSocket = io.to(`student-${booking.student_id}`);
+    // studentSocket.emit('bookingApproved', { booking: booking });
+
+    res.status(200).json({ message: 'You have successfully approved this booking' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+const rejectBooking = async (req, res) => {
+  const bookingId = req.params.id;
+  try {
+    const booking = await Booking.findOne({
+      where: {
+        id: bookingId,
+        status: 'Request Sent', 
+      },
+      include: [{ model: Property, as: 'property' }],
+    });
+
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found or already approved/rejected' });
+      return;
+    }
+
+    if (booking.property.userId !== req.user.id) {
+      res.status(403).json({ error: 'You are not authorized to reject this booking' });
+      return;
+    }
+
+    await booking.update({
+      status: 'Rejected', 
+    });
+
+    // const studentSocket = io.to(`student-${booking.student_id}`);
+    // studentSocket.emit('bookingRejected', { booking: booking });
+
+    res.status(200).json({ message: 'You have successfully rejected this booking' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
+  approveBooking,
+  rejectBooking,
   createBooking,
   getBookedPropertiesByStudent,
   cancelBooking

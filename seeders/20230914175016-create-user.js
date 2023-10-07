@@ -1,31 +1,41 @@
+// In your user-seed.js file
+
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('users', [
+  up: async (queryInterface, Sequelize) => {
+    
+    const users = [
       {
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        image: 'profile.jpg',
-        role: 'student', 
-        password: 'password123',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Jane Smith',
-        email: 'janesmith@example.com',
-        image: 'landlord.jpg',
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john@example.com',
+        phoneNumber: '1234567890',
+        image: null,
         role: 'landlord',
-        password: 'password123',
+        password: 'pass12', 
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ], {});
+      {
+        firstName: 'Jane',
+        lastName: 'Smith',
+        email: 'jane@example.com',
+        phoneNumber: '9876543210',
+        image: null,
+        role: 'student',
+        password: 'pass12', 
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      
+    ];
+
+    await queryInterface.bulkInsert('users', users, {});
   },
 
-  async down (queryInterface, Sequelize) {
+  down: async (queryInterface, Sequelize) => {
+
     await queryInterface.bulkDelete('users', null, {});
-  }
+  },
 };

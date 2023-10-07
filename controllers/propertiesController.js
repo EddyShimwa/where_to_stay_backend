@@ -52,7 +52,7 @@ const createProperty = async (req, res) => {
   const getAllProperties = async (req, res) => {
     try {
       const properties = await Property.findAll({
-        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count'],
+        attributes: ['id', 'description', 'price', 'city', 'street_address', 'location', 'property_type', 'imageUrls', 'number_rooms', 'number_of_bathrooms', 'amenities', 'bookings_count', 'userId'],
       });
       res.status(200).json(properties);
     } catch (error) {

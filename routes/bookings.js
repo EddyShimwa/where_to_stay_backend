@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bookingsController = require('../controllers/bookingsController');
-const { isAuth, isStudent } = require('../middleware/isAuth');
+const { isAuth, isStudent, isLandLord } = require('../middleware/isAuth');
 
 /**
  * @swagger
@@ -67,5 +67,7 @@ router.get('/my-bookings', isAuth, isStudent, bookingsController.getBookedProper
  */
 router.delete('/bookings/cancel/:id', isAuth, isStudent, bookingsController.cancelBooking);
 
+router.put('/bookings/approve/:id', isAuth, isLandLord, bookingsController.approveBooking);
+router.put('/bookings/reject/:id', isAuth, isLandLord, bookingsController.rejectBooking);
 
 module.exports = router;

@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      status: {
+        type: DataTypes.ENUM('Request Sent', 'Pending', 'Approved', 'Rejected'),
+        defaultValue: 'Request Sent',
+      },
     }, {
       tableName: 'bookings',
       timestamps: true,
