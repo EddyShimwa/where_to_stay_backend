@@ -23,7 +23,7 @@ const getAllLandlords = async (req, res) => {
 }
 
 const getStudentsBooked = async (req, res) => {
-  const propertyId = req.params.id;
+   const propertyId = req.params.id;
   try {
     const property = await Property.findOne({
       where: {
@@ -36,24 +36,21 @@ const getStudentsBooked = async (req, res) => {
       return res.status(404).json({ error: 'Property not found or does not belong to the specified landlord' });
     }
 
-    const bookings = await Booking.findAll({
+    const students = await Booking.findAll({
       where: {
         property_id: propertyId,
       },
-      attributes: ['id'], // Include only the booking ID
+      attributes: ['student_id'], 
       include: [
         {
           model: User,
           as: 'student',
-          attributes: ['id', 'firstName', 'lastName', 'email'],
+          attributes: ['id', 'firstName', 'lastName', 'email', 'phoneNumber'],
         },
       ],
     });
 
-    // Extract just the booking IDs from the result
-    const bookingIds = bookings.map((booking) => booking.id);
-
-    res.status(200).json({ bookings, bookingIds });
+    res.status(200).json(students);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
