@@ -113,20 +113,18 @@ const getBookedPropertiesByStudent = async (req, res) => {
       where: {
         id: propertyIds,
       },
-      include: [
-        {
-          model: User, 
-          as: 'User', 
-          attributes: ['firstName', 'lastName', 'email', 'phoneNumber'], 
-        },
-      ],
-      include : [
-        {
-          model: Booking,
-          as: 'bookings',
-          attributes: ['id', 'student_id', 'property_id', 'status'],
-        },
-      ]
+        include: [
+          {
+            model: User,
+            as: 'User', 
+            attributes: ['firstName', 'lastName', 'email', 'phoneNumber'],
+          },
+          {
+            model: Booking,
+            as: 'bookings',
+            attributes: ['id', 'student_id', 'property_id', 'status'],
+          },
+        ],
     });
 
     res.status(200).json(properties);
