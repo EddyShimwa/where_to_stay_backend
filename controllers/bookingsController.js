@@ -155,13 +155,11 @@ const approveBooking = async (req, res) => {
       return;
     }
 
-    //check if the owner of the property is the one approving the booking
     if (booking.property.userId !== req.user.id) {
       res.status(403).json({ error: 'You are not authorized to approve this booking' });
       return;
     }
    
-
     await booking.update({
       status: 'Approved',
     });
