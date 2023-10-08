@@ -123,6 +123,9 @@ const getBookedPropertiesByStudent = async (req, res) => {
             model: Booking,
             as: 'bookings',
             attributes: ['id', 'student_id', 'property_id', 'status'],
+            where: {
+              student_id: req.user.id, 
+            },
           },
         ],
     });

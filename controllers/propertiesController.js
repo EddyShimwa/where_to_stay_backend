@@ -80,7 +80,6 @@ const createProperty = async (req, res) => {
     }
   };
   
-
   const getPropertyById = async (req, res) => {
     const propertyId = req.params.id;
     try {
