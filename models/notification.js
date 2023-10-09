@@ -33,8 +33,6 @@ module.exports = (sequelize, DataTypes) => {
         });
     }
     
-    //Functions to check if recipient user has role "landlord
-
     Notification.prototype.isRecipientLandlord = async function() {
         const recipientUser = await this.getUser();
         return recipientUser.role === 'landlord';

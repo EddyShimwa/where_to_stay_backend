@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Notification</title>
+        <style>
+            .notifs-container {
+                margin: auto;
+                width: 50%;
+                border: 3px solid black;
+                border-radius: 10px
+            }
+            #notif-title {
+                background-color: #eee;
+                font-size: 25px;
+                text-align: center;
+            }
+            .notifs {
+                color: rgb(13, 13, 46);
+                font-size: 20px;
+                list-style: none;
+                margin:auto;
+                text-align: center;
+            }
+        </style>
+    </head>
+<body>
+    <div class='notifs-container'>
+        <div id='notif-title' >
+            <span>NOTIFICATIONS</span>
+        </div>
+        <div class="notifications"></div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        Notification.requestPermission();
+        const socket = io({
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        token: localStorage.getItem("token")
+                    }
+                }
+            }
+        });
+        socket.on('initialize', (data) => {
+         console.log('welllll....', data)
+            const parsedData = JSON.parse(data);
+            let notifDiv = document.querySelector('.notifications');
+            notifDiv.innerHTML = '';
+            if(parsedData.error) {
+                let error = document.querySelector('#notif-title span');;
+                error.textContent = parsedData.error
+            }
+            for(obj in parsedData.notif) { 
+                let node = document.createElement('div');
+                node.innerHTML = `<a href = ${parsedData.notif[obj].link} target="_blank"><li class = "notifs">${parsedData.notif[obj].content}</li></a>`
+                notifDiv.appendChild(node)
+        }});
+        socket.on('new_notification', (data) => {
+            console.log('yesss .... new notif', data)
+            const parsedData = JSON.parse(data);
+            let notifDiv = document.querySelector('.notifications');
+            let node = document.createElement('div');
+            node.innerHTML = `<a href = ${parsedData.link} target="_blank"><li class = "notifs">${parsedData.content}</li></a>`
+            notifDiv.appendChild(node)
+            var notification = new Notification("Barefoot Nomad", {
+                body: parsedData.content,
+               //  icon: "./bareicon.png"
+            })
+        });
+        socket.on('messageFromServer', (dataFromServer) => {
+            console.log(dataFromServer);
+            socket.emit('messageToServer', { data: 'this is comming from chat socket' })
+         }) 
+    </script>
+</body>
+</html>

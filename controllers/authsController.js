@@ -7,7 +7,7 @@ dotenv.config();
 const User = db.User;
 
 const provideToken = (id, email) => {
-  const token = jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  const token = jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '5d' });
   console.log(token);
   return "Bearer " + token;
 }
@@ -69,7 +69,6 @@ const updateUser = async (req, res) => {
     const {
       firstName,
       lastName,
-      email,
       image,
       phoneNumber,
     } = req.body;
@@ -85,7 +84,6 @@ const updateUser = async (req, res) => {
     await user.update({
       firstName,
       lastName,
-      email,
       image,
       phoneNumber,
     });

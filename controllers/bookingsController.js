@@ -1,7 +1,10 @@
 const db = require('../models');
+const sendNotif = require('../utils/sendNotification');
 const Booking = db.Booking;
 const Property = db.Property;
 const User = db.User;
+const Notification = db.Notification;
+
 
 const createBooking = async (req, res ) => {
   const { property_id } = req.body;
@@ -34,14 +37,24 @@ const createBooking = async (req, res ) => {
     // Create the booking
     const newBooking = await Booking.create({
       student_id: req.user.id,
-      property_id: property.id, // Use the ID of the existing property
+      property_id: property.id, 
     });
      await property.increment('bookings_count');
 
-    //  const landlordSocket = io.to(`landlord-${property.landlord_id}`);
-    //  landlordSocket.emit('newBooking', { booking: newBooking });
 
-    res.status(201).json(newBooking);
+     function capitalize(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+     const landlordId = property.userId;
+     const notificationContent = `${capitalize(user.firstName)} ${capitalize(user.lastName)} has booked one of your properties`;
+
+     const createdNotification = await Notification.create({
+       content: notificationContent,
+       recipientUserId: landlordId,
+     });
+
+     sendNotif(createdNotification.dataValues, req, res); 
+     res.status(201).json(newBooking);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
